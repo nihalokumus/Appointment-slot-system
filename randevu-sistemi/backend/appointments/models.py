@@ -1,13 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Customer(models.Model):
-    name = models.CharField(max_length=100) # müşter adı
+    name = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
-    
+
+
 class Personnel(models.Model):
     name = models.CharField(max_length=100)
     working_start = models.TimeField()
@@ -16,7 +18,8 @@ class Personnel(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class Service(models.Model):
     name = models.CharField(max_length=100)
     duration_minutes = models.PositiveIntegerField(default=60)
@@ -25,34 +28,42 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class Appointment(models.Model):
 
     STATUS_CHOICES = [
         ("pending", "Bekliyor"),
         ("approved", "Onaylandı"),
-        ("completed", "Tamamlandı"),
         ("cancelled", "İptal Edildi"),
     ]
 
+        # Giriş yapan kullanıcı
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="appointments",
+        null=True,
+        blank=True,
+    )
+
     customer = models.ForeignKey(
-    Customer,
-    on_delete=models.CASCADE,
-    related_name="appointments"
-)
-    #Appointment tablosu, Customer tablosuna bağlıdır.
+        Customer,
+        on_delete=models.CASCADE,
+        related_name="appointments"
+    )
 
     personnel = models.ForeignKey(
-    Personnel,
-    on_delete=models.CASCADE,
-    related_name="appointments"
-)
+        Personnel,
+        on_delete=models.CASCADE,
+        related_name="appointments"
+    )
 
     service = models.ForeignKey(
-    Service,
-    on_delete=models.CASCADE,
-    related_name="appointments"
-)
+        Service,
+        on_delete=models.CASCADE,
+        related_name="appointments"
+    )
 
     appointment_date = models.DateField()
     start_time = models.TimeField()

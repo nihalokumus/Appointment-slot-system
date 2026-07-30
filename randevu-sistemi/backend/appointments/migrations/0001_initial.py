@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('appointment_date', models.DateField()),
                 ('start_time', models.TimeField()),
                 ('end_time', models.TimeField()),
-                ('status', models.CharField(choices=[('pending', 'Bekliyor'), ('approved', 'Onaylandı'), ('completed', 'Tamamlandı'), ('cancelled', 'İptal Edildi')], default='pending', max_length=20)),
+                ('status', models.CharField(choices=[('pending', 'Bekliyor'), ('approved', 'Onaylandı'), ('cancelled', 'İptal Edildi')], default='pending', max_length=20)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='appointments', to='appointments.customer')),
                 ('personnel', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='appointments', to='appointments.personnel')),
