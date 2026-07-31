@@ -11,6 +11,8 @@ function BookingForm({
   selectedTime,
   customerName,
   customerPhone,
+  customerEmail,
+  onEmailChange,
   onServiceChange,
   onPersonnelChange,
   onDateChange,
@@ -69,8 +71,10 @@ function BookingForm({
         <CustomerForm
           name={customerName}
           phone={customerPhone}
+          email={customerEmail}
           onNameChange={onNameChange}
           onPhoneChange={onPhoneChange}
+          onEmailChange={onEmailChange}
         />
       )}
     </form>

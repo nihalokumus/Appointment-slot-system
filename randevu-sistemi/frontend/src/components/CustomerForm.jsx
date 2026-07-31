@@ -1,4 +1,11 @@
-function CustomerForm({ name, phone, onNameChange, onPhoneChange }) {
+function CustomerForm({
+  name,
+  phone,
+  email,
+  onNameChange,
+  onPhoneChange,
+  onEmailChange,
+}) {
   return (
     <>
       <div className="section">
@@ -16,6 +23,16 @@ function CustomerForm({ name, phone, onNameChange, onPhoneChange }) {
           className="form-control"
           value={phone}
           onChange={(e) => onPhoneChange(e.target.value)}
+        />
+      </div>
+
+      <div className="section">
+        <label>E-posta</label>
+        <input
+          type="email"
+          className="form-control"
+          value={email}
+          onChange={(e) => onEmailChange(e.target.value)}
         />
       </div>
 

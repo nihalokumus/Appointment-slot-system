@@ -155,6 +155,7 @@ class CreateAppointmentAPIView(APIView):
         try:
             customer_name = data.get("customer_name")
             customer_phone = data.get("customer_phone")
+            customer_email = data.get("customer_email")
             personnel_id = data.get("personnel_id")
             service_id = data.get("service_id")
             appointment_date = data.get("appointment_date")
@@ -167,11 +168,17 @@ class CreateAppointmentAPIView(APIView):
             start_dt = datetime.combine(datetime.strptime(appointment_date, "%Y-%m-%d").date(), start_time)
             end_time = (start_dt + timedelta(minutes=service.duration_minutes)).time()
 
-            # Müşteriyi telefon numarasından bul veya yeni oluştur
+            
             customer, _ = Customer.objects.get_or_create(
                 phone=customer_phone,
-                defaults={"name": customer_name}
+                defaults={
+                    "name": customer_name,
+                    "email": customer_email,
+                },
             )
+            if not created and customer.email != customer_email:
+                customer.email = customer_email
+                customer.save()
 
             existing = Appointment.objects.filter(
                 personnel=personnel,

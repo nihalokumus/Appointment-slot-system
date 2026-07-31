@@ -8,7 +8,7 @@ from .views import (
     RegisterAPIView,
     LoginAPIView,
     UpdateAppointmentStatusAPIView,
-    MyAppointmentsAPIView,  # <--- Sadece bu satır eksikti
+    MyAppointmentsAPIView,
 )
 
 urlpatterns = [

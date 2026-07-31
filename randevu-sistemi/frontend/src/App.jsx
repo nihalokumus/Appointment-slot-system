@@ -4,6 +4,7 @@ import AlertMessage from "./components/AlertMessage";
 import BookingForm from "./components/BookingForm";
 import Auth from "./components/Auth";
 import StatusBadge from "./components/StatusBadge";
+import MyAppointments from "./components/MyAppointments";
 import {
   getServices,
   getPersonnels,
@@ -27,6 +28,7 @@ function App() {
 
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
 
   const [message, setMessage] = useState("");
   const [lastAppointment, setLastAppointment] = useState(null);
@@ -65,6 +67,7 @@ function App() {
     const payload = {
       customer_name: customerName,
       customer_phone: customerPhone,
+      customer_email: customerEmail,
       personnel_id: selectedPersonnel,
       service_id: selectedService,
       appointment_date: selectedDate,
@@ -77,6 +80,7 @@ function App() {
         setLastAppointment(res.data);
         setCustomerName("");
         setCustomerPhone("");
+        setCustomerEmail("");
         setSelectedTime("");
 
         return getAvailableSlots(selectedService, selectedPersonnel, selectedDate);
@@ -148,6 +152,8 @@ function App() {
         selectedTime={selectedTime}
         customerName={customerName}
         customerPhone={customerPhone}
+        customerEmail={customerEmail}
+        onEmailChange={setCustomerEmail}
         onServiceChange={setSelectedService}
         onPersonnelChange={setSelectedPersonnel}
         onDateChange={setSelectedDate}
@@ -156,6 +162,7 @@ function App() {
         onPhoneChange={setCustomerPhone}
         onSubmit={handleBooking}
       />
+      <MyAppointments />
     </div>
   );
 }

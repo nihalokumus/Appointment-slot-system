@@ -27,3 +27,5 @@ export const registerUser = (username, password) =>
   API.post("/register/", { username, password });
 export const loginUser = (username, password) =>
   API.post("/login/", { username, password });
+export const getMyAppointments = () =>
+  API.get("/my-appointments/");
