@@ -9,6 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class RegisterAPIView(APIView):
@@ -107,7 +109,6 @@ class AvailableSlotsAPIView(APIView):
         except (Personnel.DoesNotExist, Service.DoesNotExist, ValueError):
             return Response({"error": "Geçersiz bilgi!"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # O tarihteki dolu randevuları getir
         existing_appointments = Appointment.objects.filter(
             personnel=personnel,
             appointment_date=appointment_date
@@ -169,7 +170,7 @@ class CreateAppointmentAPIView(APIView):
             end_time = (start_dt + timedelta(minutes=service.duration_minutes)).time()
 
             
-            customer, _ = Customer.objects.get_or_create(
+            customer, created = Customer.objects.get_or_create(
                 phone=customer_phone,
                 defaults={
                     "name": customer_name,
@@ -202,6 +203,22 @@ class CreateAppointmentAPIView(APIView):
                 end_time=end_time,
                 status="pending"
             )
+            send_mail(
+            subject="Randevunuz Oluşturuldu",
+            message=(
+                f"Merhaba {customer.name},\n\n"
+                f"Randevunuz başarıyla oluşturuldu.\n\n"
+                f"Hizmet: {service.name}\n"
+                f"Personel: {personnel.name}\n"
+                f"Tarih: {appointment_date}\n"
+                f"Saat: {start_time.strftime('%H:%M')}\n"
+                f"Durum: Bekliyor\n\n"
+                f"Randevunuzu uygulamadan takip edebilirsiniz."
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[customer.email],
+            fail_silently=False,
+        )
 
             serializer = AppointmentSerializer(appointment)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
