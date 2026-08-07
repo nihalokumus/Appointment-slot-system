@@ -12,8 +12,8 @@ function MyAppointments() {
   }, []);
 
   return (
-    <div className="section">
-      <h2>Randevularım</h2>
+    <>
+      <h1>📖 Randevularım</h1>
 
       {appointments.length === 0 ? (
         <p>Henüz randevunuz bulunmuyor.</p>
@@ -21,26 +21,29 @@ function MyAppointments() {
         appointments.map((appointment) => (
           <div
             key={appointment.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              padding: "15px",
-              marginBottom: "10px",
-            }}
+            className="card"
+            style={{ marginBottom: "20px" }}
           >
+            <h3>{appointment.service_name}</h3>
+
             <p>
-              <b>Tarih:</b> {appointment.appointment_date}
+              👩 Personel:
+              <b> {appointment.personnel_name}</b>
             </p>
 
             <p>
-              <b>Saat:</b> {appointment.start_time}
+              📅 {appointment.appointment_date}
+            </p>
+
+            <p>
+              🕒 {appointment.start_time}
             </p>
 
             <StatusBadge status={appointment.status} />
           </div>
         ))
       )}
-    </div>
+    </>
   );
 }
 

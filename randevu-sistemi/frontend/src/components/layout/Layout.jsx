@@ -22,7 +22,8 @@ function Layout() {
             padding: "30px",
           }}
         >
-          <Outlet /> /* hangi sayfadaysak onu yerleştir.*/
+          {/* hangi sayfadaysak onu yerleştir */}
+          <Outlet /> 
         </div>
       </div>
     </>
