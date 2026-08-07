@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyAppointments } from "../services/api";
-import StatusBadge from "./StatusBadge";
+import StatusBadge from "../components/common/StatusBadge";
 
 function MyAppointments() {
   const [appointments, setAppointments] = useState([]);

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import Header from "./components/header";
-import AlertMessage from "./components/AlertMessage";
-import BookingForm from "./components/BookingForm";
+
+import Header from "./components/layout/Header";
+import AlertMessage from "./components/common/AlertMessage";
+import BookingForm from "./components/appointment/BookingForm";
+import StatusBadge from "./components/common/StatusBadge";
+import MyAppointments from "./pages/MyAppointments";
 import Auth from "./components/Auth";
-import StatusBadge from "./components/StatusBadge";
-import MyAppointments from "./components/MyAppointments";
+
 import {
   getServices,
   getPersonnels,
