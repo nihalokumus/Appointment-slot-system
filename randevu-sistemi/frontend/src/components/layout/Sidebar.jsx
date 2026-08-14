@@ -1,84 +1,113 @@
 import { NavLink } from "react-router-dom";
+import {
+  Menu,
+  Home,
+  CalendarPlus,
+  CalendarDays,
+  Scissors,
+  Users,
+  User,
+  LogOut,
+} from "lucide-react";
 
-function Sidebar() {
+function Sidebar({ isOpen, setIsOpen }) {
   const handleLogout = () => {
     localStorage.clear();
     window.location.reload();
   };
 
   const linkStyle = ({ isActive }) => ({
-    display: "block",
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
     textDecoration: "none",
     color: isActive ? "#2563eb" : "#374151",
     fontWeight: isActive ? "600" : "500",
-    padding: "12px 15px",
+    padding: "12px 14px",
     borderRadius: "10px",
     backgroundColor: isActive ? "#eff6ff" : "transparent",
-    transition: "all .2s ease",
+    transition: "all 0.2s ease",
+    whiteSpace: "nowrap",
   });
 
   return (
     <aside
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
       style={{
-        width: "250px",
-        minHeight: "100vh",
-        background: "#fff",
+        width: isOpen ? "250px" : "70px",
+        minHeight: "calc(100vh - 70px)",
+        background: "#ffffff",
         borderRight: "1px solid #e5e7eb",
-        boxShadow: "2px 0 10px rgba(0,0,0,.05)",
+        boxShadow: "2px 0 10px rgba(0,0,0,0.05)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        position: "sticky",
-        top: 0,
+        transition: "width 0.25s ease",
+        overflow: "hidden",
+        flexShrink: 0,
       }}
     >
-      <div style={{ padding: "30px 20px" }}>
-        <h2
+      <div style={{ padding: "20px 10px" }}>
+
+        {/* Menü ikonu */}
+        <div
           style={{
-            marginBottom: "35px",
-            color: "#2563eb",
-            textAlign: "center",
+            height: "45px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: isOpen ? "flex-start" : "center",
+            paddingLeft: isOpen ? "4px" : "0",
+            marginBottom: "25px",
           }}
         >
-          📅 Randevu Sistemi
-        </h2>
+          <Menu size={24} color="#374151" />
+        </div>
 
+        {/* Menü */}
         <nav
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "10px",
+            gap: "8px",
           }}
         >
           <NavLink to="/" end style={linkStyle}>
-            🏠 Ana Sayfa
+            <Home size={21} />
+            {isOpen && <span>Ana Sayfa</span>}
           </NavLink>
 
           <NavLink to="/new-appointment" style={linkStyle}>
-            📅 Yeni Randevu
+            <CalendarPlus size={21} />
+            {isOpen && <span>Yeni Randevu</span>}
           </NavLink>
 
           <NavLink to="/my-appointments" style={linkStyle}>
-            📖 Randevularım
+            <CalendarDays size={21} />
+            {isOpen && <span>Randevularım</span>}
           </NavLink>
 
           <NavLink to="/services" style={linkStyle}>
-            ✂️ Hizmetler
+            <Scissors size={21} />
+            {isOpen && <span>Hizmetler</span>}
           </NavLink>
 
           <NavLink to="/personnels" style={linkStyle}>
-            👩‍💼 Personeller
+            <Users size={21} />
+            {isOpen && <span>Personeller</span>}
           </NavLink>
 
           <NavLink to="/profile" style={linkStyle}>
-            👤 Profil
+            <User size={21} />
+            {isOpen && <span>Profil</span>}
           </NavLink>
         </nav>
       </div>
 
+      {/* Çıkış */}
       <div
         style={{
-          padding: "20px",
+          padding: "15px 10px",
           borderTop: "1px solid #e5e7eb",
         }}
       >
@@ -86,24 +115,23 @@ function Sidebar() {
           onClick={handleLogout}
           style={{
             width: "100%",
-            padding: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: isOpen ? "flex-start" : "center",
+            gap: "15px",
+            padding: "12px 14px",
             border: "none",
             borderRadius: "10px",
             cursor: "pointer",
-            background: "#ef4444",
-            color: "#fff",
+            background: "#fee2e2",
+            color: "#dc2626",
             fontWeight: "600",
-            fontSize: "15px",
-            transition: "0.2s",
-          }}
-          onMouseOver={(e) => {
-            e.target.style.background = "#dc2626";
-          }}
-          onMouseOut={(e) => {
-            e.target.style.background = "#ef4444";
+            fontSize: "14px",
+            whiteSpace: "nowrap",
           }}
         >
-          🚪 Çıkış Yap
+          <LogOut size={21} />
+          {isOpen && <span>Çıkış Yap</span>}
         </button>
       </div>
     </aside>
