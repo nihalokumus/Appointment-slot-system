@@ -56,10 +56,10 @@ class RegisterAPIView(APIView):
         )
 
         send_mail(
-            subject="Belle. E-posta Doğrulama",
+            subject="E-posta Doğrulama",
             message=(
                 f"Merhaba {username},\n\n"
-                f"Belle. hesabınızı aktifleştirmek için aşağıdaki bağlantıya tıklayın:\n\n"
+                f"Hesabınızı aktifleştirmek için aşağıdaki bağlantıya tıklayın:\n\n"
                 f"{verification_link}\n\n"
                 f"E-posta doğrulamasını tamamladıktan sonra giriş yapabilirsiniz."
             ),

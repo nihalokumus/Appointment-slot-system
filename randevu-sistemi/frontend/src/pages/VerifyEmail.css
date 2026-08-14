@@ -1,0 +1,88 @@
+/* Ekranın tamamını kaplar ve kartı dikey/yatay tam ortalar */
+.verify-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #faf6f8; /* Yumuşak ve modern arka plan */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Ortadaki şık kart */
+.verify-card {
+  background: #ffffff;
+  padding: 40px 32px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Üstteki İkon Yuvarlağı */
+.verify-logo,
+.verify-icon {
+  width: 60px;
+  height: 60px;
+  background-color: #fde8ee;
+  color: #c85a7c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.error-icon {
+  background-color: #ffe5e5;
+  color: #d90429;
+  font-weight: bold;
+}
+
+/* Başlık */
+.verify-card h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222222;
+  margin: 0 0 10px 0;
+}
+
+/* Açıklama Metni */
+.verify-card p {
+  font-size: 15px;
+  color: #666666;
+  line-height: 1.5;
+  margin: 0 0 28px 0;
+}
+
+/* Belirgin ve Şık Giriş Yap Butonu */
+.verify-button {
+  display: block;
+  width: 100%;
+  padding: 14px 0;
+  background-color: #222222; /* Sitenizin ana temasına göre bu rengi değiştirebilirsiniz */
+  color: #ffffff !important;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+.verify-button:hover {
+  background-color: #444444;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.verify-button:active {
+  transform: translateY(0);
+}

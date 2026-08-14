@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { verifyEmail } from "../services/api";
+import "./VerifyEmail.css";
 
 function VerifyEmail() {
   const { uid, token } = useParams();
@@ -49,15 +50,12 @@ function VerifyEmail() {
 
         {status === "success" && (
           <>
-            <div className="verify-icon success-icon">
-              ✓
-            </div>
 
             <h1>E-postanız doğrulandı!</h1>
 
             <p>
               Hesabınız başarıyla aktifleştirildi.
-              Artık giriş yapabilirsiniz.
+              Giriş yapabilirsiniz.
             </p>
 
             <Link
