@@ -9,6 +9,9 @@ from .views import (
     LoginAPIView,
     UpdateAppointmentStatusAPIView,
     MyAppointmentsAPIView,
+    CancelAppointmentAPIView,
+    DashboardAPIView,
+    VerifyEmailAPIView,
 )
 
 urlpatterns = [
@@ -21,4 +24,10 @@ urlpatterns = [
     path("login/", LoginAPIView.as_view()),
     path("my-appointments/", MyAppointmentsAPIView.as_view()),
     path("appointments/<int:pk>/status/", UpdateAppointmentStatusAPIView.as_view()),
+    path("appointments/<int:appointment_id>/cancel/",CancelAppointmentAPIView.as_view(),),
+    path("dashboard/", DashboardAPIView.as_view()),
+    path("register/", RegisterAPIView.as_view()),
+    path("login/", LoginAPIView.as_view()),
+    path("verify-email/<uidb64>/<token>/", VerifyEmailAPIView.as_view()),
 ]
+
