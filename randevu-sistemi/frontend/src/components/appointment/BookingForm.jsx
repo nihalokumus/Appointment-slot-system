@@ -22,62 +22,100 @@ function BookingForm({
   onSubmit,
 }) {
   return (
-    <form onSubmit={onSubmit}>
-      <div className="section">
-        <label>Hizmet</label>
-        <select
-          value={selectedService}
-          onChange={(e) => onServiceChange(e.target.value)}
-          className="form-control"
-        >
-          <option value="">Hizmet seçiniz</option>
-          {services.map((service) => (
-            <option key={service.id} value={service.id}>
-              {service.name} - {service.duration_minutes} dk
-            </option>
-          ))}
-        </select>
+    <form onSubmit={onSubmit} className="booking-form">
+
+      <div className="booking-field-grid">
+
+        <div className="booking-field">
+          <label>Hizmet</label>
+
+          <select
+            value={selectedService}
+            onChange={(e) => onServiceChange(e.target.value)}
+            className="booking-input"
+            required
+          >
+            <option value="">Hizmet seçiniz</option>
+
+            {services.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.name} — {service.duration_minutes} dk
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="booking-field">
+          <label>Personel</label>
+
+          <select
+            value={selectedPersonnel}
+            onChange={(e) =>
+              onPersonnelChange(e.target.value)
+            }
+            className="booking-input"
+            required
+          >
+            <option value="">Personel seçiniz</option>
+
+            {personnels.map((personnel) => (
+              <option
+                key={personnel.id}
+                value={personnel.id}
+              >
+                {personnel.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
       </div>
 
-      <div className="section">
-        <label>Personel</label>
-        <select
-          value={selectedPersonnel}
-          onChange={(e) => onPersonnelChange(e.target.value)}
-          className="form-control"
-        >
-          <option value="">Personel seçiniz</option>
-          {personnels.map((personnel) => (
-            <option key={personnel.id} value={personnel.id}>
-              {personnel.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="section">
+      <div className="booking-field">
         <label>Tarih</label>
+
         <input
           type="date"
           min={new Date().toISOString().split("T")[0]}
-          className="form-control"
+          className="booking-input"
           value={selectedDate}
-          onChange={(e) => onDateChange(e.target.value)}
+          onChange={(e) =>
+            onDateChange(e.target.value)
+          }
+          required
         />
       </div>
 
-      <SlotList slots={slots} selectedTime={selectedTime} onSelect={onTimeSelect} />
+      <SlotList
+        slots={slots}
+        selectedTime={selectedTime}
+        onSelect={onTimeSelect}
+      />
 
       {selectedTime && (
-        <CustomerForm
-          name={customerName}
-          phone={customerPhone}
-          email={customerEmail}
-          onNameChange={onNameChange}
-          onPhoneChange={onPhoneChange}
-          onEmailChange={onEmailChange}
-        />
+        <div className="customer-section">
+
+          <div className="customer-section-header">
+            <div className="step-circle">2</div>
+
+            <div>
+              <h3>İletişim Bilgileri</h3>
+              <p>Randevunuz için bilgilerinizi girin.</p>
+            </div>
+          </div>
+
+          <CustomerForm
+            name={customerName}
+            phone={customerPhone}
+            email={customerEmail}
+            onNameChange={onNameChange}
+            onPhoneChange={onPhoneChange}
+            onEmailChange={onEmailChange}
+          />
+
+        </div>
       )}
+
     </form>
   );
 }

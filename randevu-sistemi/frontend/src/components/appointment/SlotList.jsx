@@ -1,41 +1,61 @@
 function SlotList({ slots, selectedTime, onSelect }) {
-  if (slots.length === 0) return null;
+  if (slots.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="section">
-      <label>Uygun Saatler</label>
+    <div className="slot-section">
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "10px",
-          marginTop: "10px",
-        }}
-      >
+      <div className="slot-header">
+        <div>
+          <h3>Uygun Saatler</h3>
+          <p>Size uygun saati seçin.</p>
+        </div>
+
+        <span className="slot-count">
+          {slots.filter((slot) => slot.is_available).length} uygun
+        </span>
+      </div>
+
+      <div className="slot-grid">
+
         {slots.map((slot) => (
           <button
             key={slot.start_time}
             type="button"
             disabled={!slot.is_available}
             onClick={() => onSelect(slot.start_time)}
-            style={{
-              padding: "10px 15px",
-              borderRadius: "8px",
-              border: "none",
-              cursor: slot.is_available ? "pointer" : "not-allowed",
-              background: !slot.is_available
-                ? "#ddd"
+            className={`slot-button ${
+              !slot.is_available
+                ? "slot-disabled"
                 : selectedTime === slot.start_time
-                ? "#1d4ed8"
-                : "#22c55e",
-              color: "white",
-            }}
+                ? "slot-selected"
+                : ""
+            }`}
           >
-            {slot.start_time} - {slot.end_time}
+            {slot.start_time}
           </button>
         ))}
+
       </div>
+
+      <div className="slot-legend">
+        <span>
+          <i className="legend-dot available" />
+          Uygun
+        </span>
+
+        <span>
+          <i className="legend-dot selected" />
+          Seçili
+        </span>
+
+        <span>
+          <i className="legend-dot unavailable" />
+          Dolu
+        </span>
+      </div>
+
     </div>
   );
 }

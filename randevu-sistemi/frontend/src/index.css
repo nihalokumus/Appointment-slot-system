@@ -1343,3 +1343,456 @@ select.input {
     font-size: 32px;
   }
 }
+
+/* =====================================================
+   YENİ RANDEVU
+   ===================================================== */
+
+.appointment-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 34px 28px 60px;
+}
+
+.appointment-page-header {
+  margin-bottom: 28px;
+}
+
+.page-eyebrow {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.appointment-page-header h1 {
+  font-size: 34px;
+  margin-bottom: 7px;
+}
+
+.appointment-page-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.appointment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.appointment-form-card,
+.appointment-summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.appointment-form-card {
+  padding: 28px;
+}
+
+.appointment-summary-card {
+  padding: 26px;
+  position: sticky;
+  top: 90px;
+}
+
+.appointment-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.appointment-card-header h2,
+.summary-header h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.appointment-card-header p,
+.summary-header p {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.booking-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.booking-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.booking-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.booking-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  transition: 0.15s ease;
+}
+
+.booking-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.booking-input::placeholder {
+  color: #b5a4ad;
+}
+
+/* ---------- Saatler ---------- */
+
+.slot-section {
+  padding: 20px 0 4px;
+  border-top: 1px solid var(--border);
+}
+
+.slot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.slot-header h3 {
+  font-size: 17px;
+  margin-bottom: 2px;
+}
+
+.slot-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.slot-count {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.slot-button {
+  min-height: 43px;
+  padding: 9px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.15s ease;
+}
+
+.slot-button:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--primary-softer);
+  color: var(--primary-hover);
+}
+
+.slot-button.slot-selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(232, 91, 156, 0.25);
+}
+
+.slot-button.slot-disabled {
+  background: #f7f5f6;
+  border-color: #eee8eb;
+  color: #b8adb2;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.slot-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 13px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.slot-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.legend-dot.available {
+  background: #cdbcc5;
+}
+
+.legend-dot.selected {
+  background: var(--primary);
+}
+
+.legend-dot.unavailable {
+  background: #d9d3d6;
+}
+
+/* ---------- Müşteri bilgileri ---------- */
+
+.customer-section {
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.customer-section-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 18px;
+}
+
+.customer-section-header h3 {
+  font-size: 17px;
+  margin-bottom: 2px;
+}
+
+.customer-section-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.appointment-submit {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 3px;
+  border: none;
+  border-radius: 11px;
+  background: var(--primary);
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  transition: 0.15s ease;
+  box-shadow: 0 8px 20px rgba(232, 91, 156, 0.2);
+}
+
+.appointment-submit:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.appointment-submit span {
+  margin-left: 7px;
+  font-size: 17px;
+}
+
+/* ---------- Randevu özeti ---------- */
+
+.summary-header {
+  margin-bottom: 20px;
+}
+
+.summary-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 6px;
+}
+
+.summary-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-row span {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.summary-row strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.summary-row strong.selected-value {
+  color: var(--primary);
+}
+
+.summary-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 15px;
+  border-radius: 12px;
+  background: var(--primary-softer);
+}
+
+.summary-price span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.summary-price strong {
+  color: var(--primary-hover);
+  font-size: 17px;
+}
+
+.summary-empty {
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.summary-empty div {
+  color: var(--primary);
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.summary-empty p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---------- Başarılı randevu ---------- */
+
+.appointment-success {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 17px;
+  border: 1px solid #d9eddf;
+  border-radius: 14px;
+  background: #f4fbf6;
+}
+
+.success-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e2f4e8;
+  color: var(--success);
+  font-weight: 700;
+}
+
+.appointment-success div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.appointment-success strong {
+  font-size: 13px;
+}
+
+.appointment-success span {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* ---------- Mobil ---------- */
+
+@media (max-width: 850px) {
+  .appointment-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-summary-card {
+    position: static;
+  }
+
+  .booking-field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .appointment-page {
+    padding: 24px 15px 40px;
+  }
+
+  .appointment-form-card,
+  .appointment-summary-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .appointment-page-header h1 {
+    font-size: 28px;
+  }
+
+  .slot-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
