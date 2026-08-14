@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
 
 function Sidebar() {
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
   const linkStyle = ({ isActive }) => ({
     display: "block",
     textDecoration: "none",
@@ -17,7 +22,7 @@ function Sidebar() {
       style={{
         width: "250px",
         minHeight: "100vh",
-        background: "#ffffff",
+        background: "#fff",
         borderRight: "1px solid #e5e7eb",
         boxShadow: "2px 0 10px rgba(0,0,0,.05)",
         display: "flex",
@@ -30,7 +35,6 @@ function Sidebar() {
       <div style={{ padding: "30px 20px" }}>
         <h2
           style={{
-            margin: 0,
             marginBottom: "35px",
             color: "#2563eb",
             textAlign: "center",
@@ -79,6 +83,7 @@ function Sidebar() {
         }}
       >
         <button
+          onClick={handleLogout}
           style={{
             width: "100%",
             padding: "12px",
@@ -89,6 +94,13 @@ function Sidebar() {
             color: "#fff",
             fontWeight: "600",
             fontSize: "15px",
+            transition: "0.2s",
+          }}
+          onMouseOver={(e) => {
+            e.target.style.background = "#dc2626";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.background = "#ef4444";
           }}
         >
           🚪 Çıkış Yap

@@ -59,6 +59,7 @@ function BookingForm({
         <label>Tarih</label>
         <input
           type="date"
+          min={new Date().toISOString().split("T")[0]}
           className="form-control"
           value={selectedDate}
           onChange={(e) => onDateChange(e.target.value)}
