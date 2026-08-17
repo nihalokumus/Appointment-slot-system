@@ -277,9 +277,41 @@ class CreateAppointmentAPIView(APIView):
             service = Service.objects.get(id=service_id)
             personnel = Personnel.objects.get(id=personnel_id)
 
-            start_time = datetime.strptime(start_time_str, "%H:%M").time()
-            start_dt = datetime.combine(datetime.strptime(appointment_date, "%Y-%m-%d").date(), start_time)
-            end_time = (start_dt + timedelta(minutes=service.duration_minutes)).time()
+            start_time_str = data.get("start_time")
+
+            service = Service.objects.get(id=service_id)
+            personnel = Personnel.objects.get(id=personnel_id)
+
+            start_time = datetime.strptime(
+                start_time_str,
+                "%H:%M"
+            ).time()
+
+            start_dt = datetime.combine(
+                appointment_date_obj,
+                start_time
+            )
+
+            # Geçmiş tarih veya saat kontrolü
+            now = datetime.now()
+
+            appointment_datetime = datetime.combine(
+                appointment_date_obj,
+                start_time
+            )
+
+            if appointment_datetime <= now:
+                return Response(
+                    {
+                        "error": "Geçmiş tarih veya saate randevu alamazsınız."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            end_time = (
+                start_dt +
+                timedelta(minutes=service.duration_minutes)
+            ).time()
 
             
             customer, created = Customer.objects.get_or_create(
