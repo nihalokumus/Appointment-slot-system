@@ -2918,3 +2918,15 @@ select.input {
     margin-left: 83px;
   }
 }
+.appt-past {
+  opacity: 0.55;
+}
+
+.appt-past .appt-main h4,
+.appt-past .appt-meta {
+  text-decoration: line-through;
+}
+
+.appt-past .appt-date {
+  opacity: 0.65;
+}

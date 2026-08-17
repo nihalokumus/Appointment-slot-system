@@ -9,20 +9,31 @@ import StatusBadge from "../components/common/StatusBadge";
 
 function MyAppointments() {
   const [appointments, setAppointments] = useState([]);
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+  // Backend sayfalaması
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [itemCount, setItemCount] = useState(0);
+
   const [loading, setLoading] = useState(true);
 
-  // SAYFALAMA
-  const [currentPage, setCurrentPage] = useState(1);
-  const appointmentsPerPage = 10;
-
+  // Randevuları getir
   const refreshAppointments = () => {
     setLoading(true);
 
-    getMyAppointments()
+    getMyAppointments(page)
       .then((res) => {
-        setAppointments(res.data);
+        setAppointments(res.data.results);
+
+        setTotalPages(res.data.total_pages);
+
+        setTotalCount(res.data.count);
+
+        setItemCount(res.data.item_count);
       })
       .catch((error) => {
         console.error(error);
@@ -34,8 +45,9 @@ function MyAppointments() {
 
   useEffect(() => {
     refreshAppointments();
-  }, []);
+  }, [page]);
 
+  // Randevu iptal
   const handleCancel = (id) => {
     const confirmCancel = window.confirm(
       "Bu randevuyu iptal etmek istiyor musunuz?"
@@ -49,7 +61,11 @@ function MyAppointments() {
       })
       .catch((error) => {
         console.error(error);
-        alert("Randevu iptal edilirken bir hata oluştu.");
+
+        alert(
+          error.response?.data?.error ||
+            "Randevu iptal edilirken bir hata oluştu."
+        );
       });
   };
 
@@ -58,9 +74,15 @@ function MyAppointments() {
     const text = search.toLowerCase();
 
     const matchesSearch =
-      appointment.service_name?.toLowerCase().includes(text) ||
-      appointment.personnel_name?.toLowerCase().includes(text) ||
-      appointment.customer_name?.toLowerCase().includes(text) ||
+      appointment.service_name
+        ?.toLowerCase()
+        .includes(text) ||
+      appointment.personnel_name
+        ?.toLowerCase()
+        .includes(text) ||
+      appointment.customer_name
+        ?.toLowerCase()
+        .includes(text) ||
       appointment.appointment_date?.includes(text);
 
     const matchesStatus =
@@ -70,24 +92,10 @@ function MyAppointments() {
     return matchesSearch && matchesStatus;
   });
 
-  // Filtre veya arama değiştiğinde 1. sayfaya dön
+  // Arama veya filtre değişirse 1. sayfaya dön
   useEffect(() => {
-    setCurrentPage(1);
+    setPage(1);
   }, [search, statusFilter]);
-
-  // SAYFA SAYISI
-  const totalPages = Math.ceil(
-    filteredAppointments.length / appointmentsPerPage
-  );
-
-  // Mevcut sayfadaki randevular
-  const startIndex =
-    (currentPage - 1) * appointmentsPerPage;
-
-  const currentAppointments = filteredAppointments.slice(
-    startIndex,
-    startIndex + appointmentsPerPage
-  );
 
   const getStatusCount = (status) => {
     return appointments.filter(
@@ -113,6 +121,7 @@ function MyAppointments() {
 
       {/* BAŞLIK */}
       <div className="page-head">
+
         <span className="page-eyebrow">
           RANDEVULAR
         </span>
@@ -123,6 +132,7 @@ function MyAppointments() {
           Oluşturduğunuz randevuları buradan takip edebilir
           ve yönetebilirsiniz.
         </p>
+
       </div>
 
       {/* ARAMA */}
@@ -155,7 +165,7 @@ function MyAppointments() {
           onClick={() => setStatusFilter("all")}
         >
           Tümü
-          <span>{appointments.length}</span>
+          <span>{totalCount}</span>
         </button>
 
         <button
@@ -193,8 +203,12 @@ function MyAppointments() {
       {/* SONUÇ BİLGİSİ */}
       {!loading && (
         <div className="appointments-result">
-          <strong>{filteredAppointments.length}</strong>{" "}
-          randevu gösteriliyor
+
+          <strong>{totalCount}</strong>{" "}
+          toplam randevu —{" "}
+          <strong>{itemCount}</strong>{" "}
+          item gösteriliyor
+
         </div>
       )}
 
@@ -237,12 +251,12 @@ function MyAppointments() {
 
       {/* RANDEVULAR */}
       {!loading &&
-        currentAppointments.length > 0 && (
+        filteredAppointments.length > 0 && (
           <>
 
             <div className="appt-list">
 
-              {currentAppointments.map((appointment) => {
+              {filteredAppointments.map((appointment) => {
 
                 const date = formatDate(
                   appointment.appointment_date
@@ -333,11 +347,9 @@ function MyAppointments() {
 
                 {/* GERİ */}
                 <button
-                  disabled={currentPage === 1}
+                  disabled={page === 1}
                   onClick={() =>
-                    setCurrentPage(
-                      currentPage - 1
-                    )
+                    setPage(page - 1)
                   }
                 >
                   ←
@@ -352,12 +364,12 @@ function MyAppointments() {
                   <button
                     key={pageNumber}
                     className={
-                      currentPage === pageNumber
+                      page === pageNumber
                         ? "active"
                         : ""
                     }
                     onClick={() =>
-                      setCurrentPage(pageNumber)
+                      setPage(pageNumber)
                     }
                   >
                     {pageNumber}
@@ -367,13 +379,9 @@ function MyAppointments() {
 
                 {/* İLERİ */}
                 <button
-                  disabled={
-                    currentPage === totalPages
-                  }
+                  disabled={page === totalPages}
                   onClick={() =>
-                    setCurrentPage(
-                      currentPage + 1
-                    )
+                    setPage(page + 1)
                   }
                 >
                   →

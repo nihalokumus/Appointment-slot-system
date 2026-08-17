@@ -381,20 +381,71 @@ class MyAppointmentsAPIView(APIView):
         appointments = (
             Appointment.objects
             .filter(user=request.user)
-            .select_related( #Eğer select_related kullanmazsan Django her satır için tekrar tekrar veritabanına gider.
+            .select_related(
                 "customer",
                 "personnel",
                 "service",
             )
-            .order_by("-appointment_date", "-start_time")
+            .order_by(
+                "-appointment_date",
+                "-start_time"
+            )
         )
+
+        # SAYFA NUMARASI
+        try:
+            page = int(request.query_params.get("page", 1))
+        except (ValueError, TypeError):
+            page = 1
+
+        if page < 1:
+            page = 1
+
+        # HER SAYFADA 10 ITEM
+        page_size = 10
+
+        # TOPLAM ITEM SAYISI
+        total_count = appointments.count()
+
+        # TOPLAM SAYFA SAYISI
+        total_pages = (total_count + page_size - 1) // page_size
+
+        if total_pages == 0:
+            total_pages = 1
+
+        # Geçersiz sayfa gelirse son sayfaya git
+        if page > total_pages:
+            page = total_pages
+
+        # O SAYFADAKİ ITEM'LAR
+        start = (page - 1) * page_size
+        end = start + page_size
+
+        paginated_appointments = appointments[start:end]
 
         serializer = AppointmentSerializer(
-            appointments,
-            many=True,
+            paginated_appointments,
+            many=True
         )
 
-        return Response(serializer.data)
+        return Response({
+            "results": serializer.data,
+
+            # TOPLAM ITEM
+            "count": total_count,
+
+            # MEVCUT SAYFA
+            "page": page,
+
+            # SAYFA BAŞINA ITEM
+            "page_size": page_size,
+
+            # TOPLAM SAYFA
+            "total_pages": total_pages,
+
+            # BU SAYFADA GERÇEKTEN KAÇ ITEM VAR
+            "item_count": len(serializer.data),
+        })
 
 class CancelAppointmentAPIView(APIView):
 

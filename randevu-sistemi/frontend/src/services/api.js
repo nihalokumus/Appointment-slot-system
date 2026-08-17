@@ -54,8 +54,8 @@ export const updateAppointmentStatus = (
   );
 
 // Kullanıcının randevuları
-export const getMyAppointments = () =>
-  API.get("/my-appointments/");
+export const getMyAppointments = (page = 1) =>
+  API.get(`/my-appointments/?page=${page}`);
 
 // Randevu iptal
 export const cancelAppointment = (id) =>
