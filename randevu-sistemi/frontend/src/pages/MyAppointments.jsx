@@ -13,6 +13,10 @@ function MyAppointments() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
+  // SAYFALAMA
+  const [currentPage, setCurrentPage] = useState(1);
+  const appointmentsPerPage = 10;
+
   const refreshAppointments = () => {
     setLoading(true);
 
@@ -49,6 +53,7 @@ function MyAppointments() {
       });
   };
 
+  // Arama + durum filtresi
   const filteredAppointments = appointments.filter((appointment) => {
     const text = search.toLowerCase();
 
@@ -64,6 +69,25 @@ function MyAppointments() {
 
     return matchesSearch && matchesStatus;
   });
+
+  // Filtre veya arama değiştiğinde 1. sayfaya dön
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
+
+  // SAYFA SAYISI
+  const totalPages = Math.ceil(
+    filteredAppointments.length / appointmentsPerPage
+  );
+
+  // Mevcut sayfadaki randevular
+  const startIndex =
+    (currentPage - 1) * appointmentsPerPage;
+
+  const currentAppointments = filteredAppointments.slice(
+    startIndex,
+    startIndex + appointmentsPerPage
+  );
 
   const getStatusCount = (status) => {
     return appointments.filter(
@@ -87,9 +111,11 @@ function MyAppointments() {
   return (
     <div className="page">
 
-      {/* Başlık */}
+      {/* BAŞLIK */}
       <div className="page-head">
-        <span className="page-eyebrow">RANDEVULAR</span>
+        <span className="page-eyebrow">
+          RANDEVULAR
+        </span>
 
         <h1>Randevularım</h1>
 
@@ -99,23 +125,27 @@ function MyAppointments() {
         </p>
       </div>
 
-      {/* Arama */}
+      {/* ARAMA */}
       <div className="appointments-toolbar">
 
         <div className="appointment-search">
+
           <span>⌕</span>
 
           <input
             type="text"
             placeholder="Hizmet, personel veya tarih ara..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
           />
+
         </div>
 
       </div>
 
-      {/* Filtreler */}
+      {/* FİLTRELER */}
       <div className="filter-row">
 
         <button
@@ -160,7 +190,7 @@ function MyAppointments() {
 
       </div>
 
-      {/* Sonuç bilgisi */}
+      {/* SONUÇ BİLGİSİ */}
       {!loading && (
         <div className="appointments-result">
           <strong>{filteredAppointments.length}</strong>{" "}
@@ -168,115 +198,192 @@ function MyAppointments() {
         </div>
       )}
 
-      {/* Yükleniyor */}
+      {/* YÜKLENİYOR */}
       {loading && (
         <div className="appointments-empty">
-          <div className="empty-icon">◌</div>
-          <h3>Randevular yükleniyor...</h3>
-        </div>
-      )}
 
-      {/* Randevu yok */}
-      {!loading && filteredAppointments.length === 0 && (
-        <div className="appointments-empty">
+          <div className="empty-icon">
+            ◌
+          </div>
 
-          <div className="empty-icon">♡</div>
-
-          <h3>Randevu bulunamadı</h3>
-
-          <p>
-            {search
-              ? "Arama kriterlerinize uygun bir randevu bulunamadı."
-              : "Henüz oluşturduğunuz bir randevu bulunmuyor."}
-          </p>
+          <h3>
+            Randevular yükleniyor...
+          </h3>
 
         </div>
       )}
 
-      {/* Randevu listesi */}
-      {!loading && filteredAppointments.length > 0 && (
-        <div className="appt-list">
+      {/* RANDEVU YOK */}
+      {!loading &&
+        filteredAppointments.length === 0 && (
+          <div className="appointments-empty">
 
-          {filteredAppointments.map((appointment) => {
+            <div className="empty-icon">
+              ♡
+            </div>
 
-            const date = formatDate(
-              appointment.appointment_date
-            );
+            <h3>
+              Randevu bulunamadı
+            </h3>
 
-            return (
-              <div
-                key={appointment.id}
-                className="appt"
-              >
+            <p>
+              {search
+                ? "Arama kriterlerinize uygun bir randevu bulunamadı."
+                : "Henüz oluşturduğunuz bir randevu bulunmuyor."}
+            </p>
 
-                {/* Tarih */}
-                <div className="appt-date">
-                  <span className="d">
-                    {date.day}
-                  </span>
+          </div>
+        )}
 
-                  <span className="m">
-                    {date.month}
-                  </span>
-                </div>
+      {/* RANDEVULAR */}
+      {!loading &&
+        currentAppointments.length > 0 && (
+          <>
 
-                {/* Bilgiler */}
-                <div className="appt-main">
+            <div className="appt-list">
 
-                  <h4>
-                    {appointment.service_name}
-                  </h4>
+              {currentAppointments.map((appointment) => {
 
-                  <div className="appt-meta">
+                const date = formatDate(
+                  appointment.appointment_date
+                );
 
-                    <span>
-                      ✂️ {appointment.personnel_name}
-                    </span>
+                return (
+                  <div
+                    key={appointment.id}
+                    className="appt"
+                  >
 
-                    <span>
-                      🕐 {appointment.start_time}
-                      {appointment.end_time &&
-                        ` - ${appointment.end_time}`}
-                    </span>
+                    {/* TARİH */}
+                    <div className="appt-date">
+
+                      <span className="d">
+                        {date.day}
+                      </span>
+
+                      <span className="m">
+                        {date.month}
+                      </span>
+
+                    </div>
+
+                    {/* BİLGİLER */}
+                    <div className="appt-main">
+
+                      <h4>
+                        {appointment.service_name}
+                      </h4>
+
+                      <div className="appt-meta">
+
+                        <span>
+                          ✂️ {appointment.personnel_name}
+                        </span>
+
+                        <span>
+                          🕐 {appointment.start_time}
+
+                          {appointment.end_time &&
+                            ` - ${appointment.end_time}`}
+                        </span>
+
+                      </div>
+
+                      <div className="appt-meta">
+
+                        <span>
+                          👤 {appointment.customer_name}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                    {/* SAĞ TARAF */}
+                    <div className="appt-right">
+
+                      <StatusBadge
+                        status={appointment.status}
+                      />
+
+                      {appointment.status !== "cancelled" && (
+                        <button
+                          className="appointment-cancel-btn"
+                          onClick={() =>
+                            handleCancel(
+                              appointment.id
+                            )
+                          }
+                        >
+                          Randevuyu İptal Et
+                        </button>
+                      )}
+
+                    </div>
 
                   </div>
+                );
+              })}
 
-                  <div className="appt-meta">
+            </div>
 
-                    <span>
-                      👤 {appointment.customer_name}
-                    </span>
+            {/* SAYFALAMA */}
+            {totalPages > 1 && (
+              <div className="pagination">
 
-                  </div>
+                {/* GERİ */}
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() =>
+                    setCurrentPage(
+                      currentPage - 1
+                    )
+                  }
+                >
+                  ←
+                </button>
 
-                </div>
+                {/* SAYFA NUMARALARI */}
+                {Array.from(
+                  { length: totalPages },
+                  (_, index) => index + 1
+                ).map((pageNumber) => (
 
-                {/* Sağ taraf */}
-                <div className="appt-right">
+                  <button
+                    key={pageNumber}
+                    className={
+                      currentPage === pageNumber
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() =>
+                      setCurrentPage(pageNumber)
+                    }
+                  >
+                    {pageNumber}
+                  </button>
 
-                  <StatusBadge
-                    status={appointment.status}
-                  />
+                ))}
 
-                  {appointment.status !== "cancelled" && (
-                    <button
-                      className="appointment-cancel-btn"
-                      onClick={() =>
-                        handleCancel(appointment.id)
-                      }
-                    >
-                      Randevuyu İptal Et
-                    </button>
-                  )}
-
-                </div>
+                {/* İLERİ */}
+                <button
+                  disabled={
+                    currentPage === totalPages
+                  }
+                  onClick={() =>
+                    setCurrentPage(
+                      currentPage + 1
+                    )
+                  }
+                >
+                  →
+                </button>
 
               </div>
-            );
-          })}
+            )}
 
-        </div>
-      )}
+          </>
+        )}
 
     </div>
   );
